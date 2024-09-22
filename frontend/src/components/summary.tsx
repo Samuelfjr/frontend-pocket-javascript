@@ -20,8 +20,14 @@ export function Summary() {
     staleTime: 1000 * 60, // 60 seconds
   })
 
+  if(!data) {
+    return null
+  }
+
   const firstDayOfWeek = dayjs().startOf('week').format('D MMM')
   const lastDayOfWeek = dayjs().endOf('week').format('D MMM')
+
+  const completedPercentage = Math.round(data.completed * 100 / data.total)
   
   return (
     <div className="py-10 max-w-[480px] px-5 mx-auto flex flex-col gap-6">
@@ -43,7 +49,7 @@ export function Summary() {
 
       <div className="flex flex-col gap-3">
         <Progress value={8} max={15}>
-          <ProgressIndicator style={{ width: '50%' }} />
+          <ProgressIndicator style={{ width: `${completedPercentage}%` }} />
         </Progress>
 
         <div className="flex items-center justify-between text-xs text-zinc-400">
@@ -51,7 +57,7 @@ export function Summary() {
             Você completou <span className="text-zinc-100">{data?.completed}</span> de{' '}
             <span className="text-zinc-100">{data?.total}</span> metas nessa semana.
           </span>
-          <span>58%</span>
+          <span>{completedPercentage}%</span>
         </div>
       </div>
 
